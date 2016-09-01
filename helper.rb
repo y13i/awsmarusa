@@ -17,8 +17,12 @@ def iterate_regions(is_global = false, &block)
   threads.each(&:join)
 end
 
-def check_resource(resource_name = "resource", arrayish = [], threshold = 1, is_above = false)
-  count = arrayish.to_a.size
+def check_resources(name: "resource", arrayish: [], threshold: 1, is_above: false, filter: nil)
+  count = if filter
+    arrayish.select(&filter).size
+  else
+    arrayish.count
+  end
 
   list = ENV["VERBOSE"] ? arrayish.inspect : nil
 
@@ -28,23 +32,24 @@ def check_resource(resource_name = "resource", arrayish = [], threshold = 1, is_
     count.to_s.green
   end
 
-  puts "  #{resource_name}: #{count_string}#{list ? " (#{list})" : nil}"
+  puts "  #{name}: #{count_string}#{list ? " (#{list})" : nil}"
 end
 
-def check_service(client_class = NilClass, is_global = false, resources = {})
+def check_service(client_class = NilClass, is_global = false, resource_types = {})
   iterate_regions(is_global) do |region|
     client = client_class.new region: region
 
-    resources.each do |resource_name, properties|
+    resource_types.each do |name, properties|
       abort if properties[:method_name].to_s.match(/\A(delete|put|update|remove)/)
 
       response = client.send properties[:method_name], (properties[:method_params] ? properties[:method_params] : {})
 
-      check_resource(
-        "#{resource_name} #{"(#{region})".light_black}",
-        properties[:arrayish].inject(response) {|a, m| a.send(m)},
-        properties[:threshold],
-        (properties[:next] ? properties[:next].inject(response) {|a, m| a.send(m)} : false)
+      check_resources(
+        name:      "#{name} #{"(#{region})".light_black}",
+        arrayish:  properties[:arrayish].inject(response) {|a, m| a.send(m)},
+        threshold: properties[:threshold],
+        is_above:  (properties[:next] ? properties[:next].inject(response) {|a, m| a.send(m)} : false),
+        filter:    properties[:filter],
       )
     end
   end
