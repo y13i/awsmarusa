@@ -1,4 +1,4 @@
-desc "Check S3 Domains resources"
+desc "Check S3 resources"
 task :s3 do
   check_service(Aws::S3::Client, true,
     "Buckets" => {
