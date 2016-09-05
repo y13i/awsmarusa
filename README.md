@@ -25,12 +25,6 @@ $ bundle exec rake --tasks
 ## TODO:
 
 ```
-- codepipeline
-- datapipeline
-- deploy
-- directconnect
-- dynamodb
-- ec2
 - ecr
 - ecs
 - elasticache
