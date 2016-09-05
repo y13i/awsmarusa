@@ -37,7 +37,6 @@ $ bundle exec rake
 ## TODO:
 
 ```
-- es
 - iam
 - lambda
 - logs
