@@ -1,5 +1,5 @@
 require_relative "helper.rb"
 
-task :default => :check
+task :default => :all
 
 Dir.glob("tasks/**/*.rake") {|t| import t}
