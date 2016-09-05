@@ -37,7 +37,6 @@ $ bundle exec rake
 ## TODO:
 
 ```
-- elasticache
 - elb
 - elbv2
 - es
