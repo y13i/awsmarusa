@@ -37,7 +37,6 @@ $ bundle exec rake
 ## TODO:
 
 ```
-- elbv2
 - es
 - iam
 - lambda
