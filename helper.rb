@@ -2,7 +2,11 @@ require "aws-sdk"
 require "colorize"
 
 def iterate_regions(is_global = false, &block)
-  @regions ||= (ENV["REGIONS"] ? ENV["REGIONS"].split(",") : Aws::EC2::Client.new.describe_regions.regions.map(&:region_name))
+  @regions ||= if ENV["REGIONS"]
+    ENV["REGIONS"].split(",")
+  else
+    Aws::EC2::Client.new.describe_regions.regions.map(&:region_name)
+  end
 
   threads = (is_global ? ["us-east-1"] : @regions).map do |r|
     Thread.new r do |region|
@@ -34,7 +38,7 @@ end
 
 def check_service(client_class = NilClass, is_global = false, resource_types = {})
   puts client_class.name.split("::")[1]
-  
+
   out = iterate_regions(is_global) do |region|
     client  = client_class.new region: region
     outputs = []
