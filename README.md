@@ -33,9 +33,3 @@ or
 ```sh
 $ bundle exec rake
 ```
-
-## TODO:
-
-```
-- iam
-```
