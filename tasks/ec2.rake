@@ -113,7 +113,7 @@ task :ec2 do
       method_params: {owner_ids: ["self"]},
       arrayish:      [:snapshots],
       threshold:     1,
-      # next:          :next_token,
+      next:          [:next_token],
     },
 
     "Subnet" => {
@@ -126,14 +126,14 @@ task :ec2 do
       method_name: :describe_volumes,
       arrayish:    [:volumes],
       threshold:   1,
-      # next:        :next_token,
+      next:        [:next_token],
     },
 
     "VPC Endpoints" => {
       method_name: :describe_vpc_endpoints,
       arrayish:    [:vpc_endpoints],
       threshold:   1,
-      # next:        :next_token,
+      next:        [:next_token],
     },
 
     "VPC Peering Connections" => {

@@ -22,11 +22,21 @@ Use environmental variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_
 $ bundle exec rake --tasks
 ```
 
+### Check all
+
+```sh
+$ bundle exec rake _all
+```
+
+or
+
+```sh
+$ bundle exec rake
+```
+
 ## TODO:
 
 ```
-- ecr
-- ecs
 - elasticache
 - elb
 - elbv2
