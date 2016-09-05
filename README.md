@@ -38,6 +38,5 @@ $ bundle exec rake
 
 ```
 - iam
-- sns
 - sqs
 ```
