@@ -38,7 +38,6 @@ $ bundle exec rake
 
 ```
 - iam
-- lambda
 - logs
 - opsworks
 - redshift
