@@ -10,12 +10,10 @@ def iterate_regions(is_global = false, &block)
     end
   end
 
-  outputs = threads.map do |thread|
+  threads.map do |thread|
     thread.join
     thread[:output]
   end
-
-  puts outputs
 end
 
 def check_resources(arrayish: [], threshold: 1, is_above: false, filter: nil)
@@ -35,7 +33,9 @@ def check_resources(arrayish: [], threshold: 1, is_above: false, filter: nil)
 end
 
 def check_service(client_class = NilClass, is_global = false, resource_types = {})
-  iterate_regions(is_global) do |region|
+  puts client_class.name.split("::")[1]
+  
+  out = iterate_regions(is_global) do |region|
     client  = client_class.new region: region
     outputs = []
 
@@ -72,4 +72,6 @@ def check_service(client_class = NilClass, is_global = false, resource_types = {
 
     outputs
   end
+
+  puts out
 end
