@@ -38,7 +38,6 @@ $ bundle exec rake
 
 ```
 - iam
-- opsworks
 - redshift
 - route53
 - s3
