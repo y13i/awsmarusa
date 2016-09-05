@@ -38,7 +38,6 @@ $ bundle exec rake
 
 ```
 - iam
-- route53
 - s3
 - ses
 - sns
