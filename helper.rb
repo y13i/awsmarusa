@@ -27,13 +27,18 @@ def check_resources(arrayish: [], threshold: 1, is_above: false, filter: nil)
     arrayish.count
   end
 
-  count_string = if count >= threshold
+  is_exceeding = count >= threshold
+
+  count_string = if is_exceeding
     "#{count}#{"+" if is_above && !is_above.empty?}".red
   else
     count.to_s.green
   end
 
-  count_string
+  {
+    count_string: count_string,
+    is_exceeding: is_exceeding,
+  }
 end
 
 def check_service(client_class = NilClass, is_global = false, resource_types = {})
@@ -57,12 +62,14 @@ def check_service(client_class = NilClass, is_global = false, resource_types = {
           properties[:arrayish].inject(response) {|a, m| a.send(m)}
         end
 
-        count_string = check_resources(
+        check_resources_result = check_resources(
           arrayish:  arrayish,
           threshold: properties[:threshold],
           is_above:  (properties[:next] ? properties[:next].inject(response) {|a, m| a.send(m)} : false),
           filter:    properties[:filter],
         )
+
+        count_string = check_resources_result[:count_string]
 
         output.concat count_string
       rescue Aws::Errors::NoSuchEndpointError
@@ -70,7 +77,11 @@ def check_service(client_class = NilClass, is_global = false, resource_types = {
       rescue => ex
         output.concat "#{ex.class}".yellow
       ensure
-        outputs.push output
+        if check_resources_result && check_resources_result[:is_exceeding]
+          outputs.push output
+        else
+          outputs.push output if ENV["VERBOSE"]
+        end
       end
     end
 

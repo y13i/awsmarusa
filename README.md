@@ -33,3 +33,7 @@ or
 ```sh
 $ bundle exec rake
 ```
+
+### Environmental variables
+
+- `VERBOSE`: (Any value) Set this to show all resources.
