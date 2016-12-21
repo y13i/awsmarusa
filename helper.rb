@@ -51,7 +51,7 @@ def check_service(client_class = NilClass, is_global = false, resource_types = {
     resource_types.each do |name, properties|
       abort if properties[:method_name].to_s.match(/\A(delete|put|update|remove)/)
 
-      output = "  #{name} #{"(#{region})".light_black}: "
+      output = "  #{name} #{"(#{is_global ? "global" : region})".light_black}: "
 
       begin
         response = client.send properties[:method_name], (properties[:method_params] ? properties[:method_params] : {})
